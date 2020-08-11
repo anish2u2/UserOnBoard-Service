@@ -3,6 +3,7 @@
  */
 package com.onboard.service.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,8 +13,12 @@ import java.util.List;
  */
 public class ValidationErrorResponse extends ErrorResponse{
 
-	private List<FieldError> fieldErrors;
-
+	private List<FieldError> fieldErrors=new ArrayList<FieldError>();
+	
+	public void addField(FieldError error){
+		this.fieldErrors.add(error);
+	}
+	
 	/**
 	 * @return the fieldErrors
 	 */

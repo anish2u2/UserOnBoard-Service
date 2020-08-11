@@ -3,12 +3,14 @@
  */
 package com.onboard.service.model;
 
+import com.onboard.service.contracts.Response;
+
 /**
  * @author Anish Singh(anish2u2@gmail.com)
  *
- *         11-Aug-2020
+ * 11-Aug-2020
  */
-public class Response implements com.onboard.service.contracts.Response {
+public class AuthResponse implements Response{
 
 	private int statusCode;
 
@@ -25,5 +27,8 @@ public class Response implements com.onboard.service.contracts.Response {
 	public void setStatusCode(int statusCode) {
 		this.statusCode = statusCode;
 	}
-
+	
+	
+	
+	
 }

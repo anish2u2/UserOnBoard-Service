@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.onboard.service.dao.UserRolesDao;
+import com.onboard.service.dao.OnBoardDao;
 import com.onboard.service.entity.Role;
 import com.onboard.service.entity.User;
 import com.onboard.service.repos.UserDetailsRepository;
@@ -46,7 +47,8 @@ public class UserDetailsServices implements UserDetailsService{
 	private String adminPassword;
 	
 	@Autowired
-	private UserRolesDao<Role> userRoleDao;
+	@Qualifier("onBoardDao")
+	private OnBoardDao<Role> userRoleDao;
 	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {

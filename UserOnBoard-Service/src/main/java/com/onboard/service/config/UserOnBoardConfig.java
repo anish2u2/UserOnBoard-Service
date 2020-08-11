@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -64,11 +65,12 @@ public class UserOnBoardConfig extends WebSecurityConfigurerAdapter implements W
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
-		http.csrf().disable().authorizeRequests().anyRequest()
+		http.csrf().disable().authorizeRequests().antMatchers("/register.json").permitAll().anyRequest()
 				.authenticated();
 
 	}
-
+	
+	@Primary
 	@Autowired
 	@Bean
 	public LocalSessionFactoryBean getSessionFactory(DataSource dataSource) {

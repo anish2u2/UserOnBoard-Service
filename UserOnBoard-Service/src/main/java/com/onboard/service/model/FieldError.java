@@ -15,6 +15,18 @@ public class FieldError {
 	private String message;
 
 	/**
+	 * 
+	 */
+	public FieldError() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public FieldError(String fieldName,String message ){
+		this.fieldName=fieldName;
+		this.fieldName=message;
+	}
+	
+	/**
 	 * @return the fieldName
 	 */
 	public String getFieldName() {
