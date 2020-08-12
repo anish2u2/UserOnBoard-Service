@@ -5,13 +5,21 @@ package com.onboard.service.config;
 
 import java.util.Properties;
 
+import javax.jms.ConnectionFactory;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jms.annotation.EnableJms;
+import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
+import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -43,24 +51,24 @@ import com.onboard.service.filters.AuthenticationFilter;
 @EnableWebMvc
 @EnableTransactionManagement
 @EnableWebSecurity
+@EnableJms
 public class UserOnBoardConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
 	@Autowired
 	private AuthenticationFilter authFilter;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService);
 	}
-	
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -69,7 +77,7 @@ public class UserOnBoardConfig extends WebSecurityConfigurerAdapter implements W
 				.authenticated();
 
 	}
-	
+
 	@Primary
 	@Autowired
 	@Bean
@@ -108,15 +116,34 @@ public class UserOnBoardConfig extends WebSecurityConfigurerAdapter implements W
 		jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
 		return jpaTransactionManager;
 	}
-	
+
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
-	
+
 	@Bean
 	public AuthenticationManager authenticationManager() throws Exception {
 		return super.authenticationManager();
+	}
+
+	@Bean
+	public JmsListenerContainerFactory<?> myFactory(ConnectionFactory connectionFactory,
+			DefaultJmsListenerContainerFactoryConfigurer configurer) {
+		DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
+		// This provides all boot's default to this factory, including the message
+		// converter
+		configurer.configure(factory, connectionFactory);
+		// You could still override some of Boot's default if necessary.
+		return factory;
+	}
+
+	@Bean // Serialize message content to json using TextMessage
+	public MessageConverter jacksonJmsMessageConverter() {
+		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
+		converter.setTargetType(MessageType.TEXT);
+		converter.setTypeIdPropertyName("_type");
+		return converter;
 	}
 
 }

@@ -16,6 +16,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -90,6 +91,7 @@ public class AuthenticationFilter extends OncePerRequestFilter{
 		String token = request.getHeader(TOKEN_HEADER);
 		if (!StringUtils.isEmpty(token)) {
 			HttpHeaders headers = new HttpHeaders();
+			headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 			headers.add(TOKEN_HEADER, token);
 			HttpEntity<String> entity = new HttpEntity<String>("", headers);
 			ResponseEntity<Response> response = restTemplate.exchange(ssoValidateTokenUrl, HttpMethod.GET, entity,
