@@ -11,6 +11,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import com.onboard.service.dao.OnBoardDao;
 import com.onboard.service.service.RolesService;
 
 /**
@@ -26,6 +27,9 @@ public class ContextInitializedListener implements ApplicationListener<ContextRe
 	
 	@Autowired
 	private RolesService service;
+	
+	@Autowired
+	private OnBoardDao dao;
 	
 	/*@EventListener(classes = ContextRefreshedEvent.class)
 	public void init() {

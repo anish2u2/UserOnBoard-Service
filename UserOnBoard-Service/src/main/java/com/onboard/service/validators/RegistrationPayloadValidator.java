@@ -4,6 +4,7 @@
 package com.onboard.service.validators;
 
 import java.util.Date;
+import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -22,7 +23,10 @@ import com.onboard.service.model.ValidationErrorResponse;
 
 @Component(value = "registratinPayloadvalidator")
 public class RegistrationPayloadValidator implements CustomValidator {
-
+	
+	private static final String regex = "^(.+)@(.+)$";
+	
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 
@@ -37,6 +41,7 @@ public class RegistrationPayloadValidator implements CustomValidator {
 	@Override
 	public boolean validate(Object target, ValidationErrorResponse errors) {
 		boolean flag = false;
+		Pattern pattern = Pattern.compile(regex);
 		RegistrationPayload payload = (RegistrationPayload) target;
 		if (StringUtils.isEmpty(payload.getUserName())) {
 			FieldError fieldError=new FieldError("userName","User name should not be empty.");
@@ -63,7 +68,12 @@ public class RegistrationPayloadValidator implements CustomValidator {
 			errors.addField(fieldError);
 			flag = true;
 		}
-	
+		
+		if(!pattern.matcher(payload.getEmailId()).matches()) {
+			FieldError fieldError=new FieldError("emailId","Please provide correct email id.");
+			errors.addField(fieldError);
+			flag = true;
+		}
 		
 		return flag;
 	}

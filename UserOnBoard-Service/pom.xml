@@ -19,6 +19,13 @@
 	</properties>
 
 	<dependencies>
+	<!-- https://mvnrepository.com/artifact/org.ow2.xlcloud/encryption-utils -->
+<dependency>
+    <groupId>org.ow2.xlcloud</groupId>
+    <artifactId>encryption-utils</artifactId>
+    <version>1.0.0</version>
+</dependency>
+	
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>

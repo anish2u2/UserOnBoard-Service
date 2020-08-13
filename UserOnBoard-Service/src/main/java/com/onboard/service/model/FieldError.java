@@ -23,7 +23,7 @@ public class FieldError {
 	
 	public FieldError(String fieldName,String message ){
 		this.fieldName=fieldName;
-		this.fieldName=message;
+		this.message=message;
 	}
 	
 	/**
