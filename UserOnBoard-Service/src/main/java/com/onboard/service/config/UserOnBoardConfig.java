@@ -83,7 +83,7 @@ public class UserOnBoardConfig extends WebSecurityConfigurerAdapter implements W
 		
 		http.addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 		//http.addFilterBefore(new CorsFilter(), AuthenticationFilter.class);
-		http.csrf().disable().authorizeRequests().antMatchers("/register.json").permitAll().anyRequest()
+		http.csrf().disable().authorizeRequests().antMatchers("/register.json","/preRegistrationData.json").permitAll().anyRequest()
 				.authenticated();
 		http.sessionManagement(policy->policy.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 	}
